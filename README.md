@@ -1,4 +1,30 @@
-Install build deps. In fedora silverblue, enter a toolsbox first.
+## Prerequisites
+
+### General
+
+1. Create ssh keys.
+   ```
+   ssh-keygen -t rsa
+   ```
+
+Now, continue on to the OS-specific instructions.
+
+### Ubuntu
+
+1. Install Packer:
+   ```
+   wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor | sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg
+   echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+   sudo apt update && sudo apt install packer
+   ```
+2. Install build deps:
+   ```
+   sudo apt-get install -y gcc gdb pkg-config flex bison dwarves kmod libelf-dev libssl-dev qemu-kvm libvirt-clients libvirt-daemon-system bridge-utils virtinst libvirt-daemon
+   ``` 
+
+### Fedora Silverblue
+
+Install build deps. In fedora silverblue, enter a toolbox first.
 
 ```shell
 toolbox enter
@@ -6,6 +32,8 @@ toolbox enter
 sudo dnf install -y qemu-img qemu-kvm
 sudo dnf install -y gcc pkg-config ncurses-devel flex bison elfutils-libelf-devel openssl-devel dwarves kmod
 ```
+
+## Build the VM
 
 Build VM
 ```shell
@@ -45,7 +73,6 @@ Explanation of args:
   - -s start gdb stub
   - -S essentially waits until gdb connects
 
-
 ```shell
 qemu-kvm \
   -kernel ./linux/arch/x86/boot/bzImage \
@@ -57,6 +84,8 @@ qemu-kvm \
   -virtfs local,path=$PWD,mount_tag=host0,security_model=mapped,id=host0 \
   -s -S
 ```
+
+**Note**: This is `qemu-system-x86_64` on Ubuntu.
 
 debug with `gdb ./linux/vmlinux -ex "target remote localhost:1234"`. Or with vscode you can `cp launch.json ./.vscode/launch.json` and hit debug.
 
