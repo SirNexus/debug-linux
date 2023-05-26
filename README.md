@@ -57,14 +57,14 @@ Explanation of args:
 
 
 ```shell
-qemu-kvm \
+qemu-system-x86_64 \
   -kernel ./linux/arch/x86/boot/bzImage \
   -serial mon:stdio \
-  -drive file=file=img.qcow2,if=virtio,cache=writeback,discard=ignore,format=qcow2 \
+  -drive file=img.qcow2,if=virtio,cache=writeback,discard=ignore,format=qcow2 \
   -net nic -net user,hostfwd=tcp::10022-:22 \
   -m 8192 -nographic \
   -append "root=/dev/vda2 ro rdinit=/sbin/init net.ifnames=0 biosdevname=0 console=ttyS0 nokaslr" \
-  -virtfs local,path=$PWD,mount_tag=host0,security_model=mapped,id=host0 \
+  -virtfs local,path=$HOME,mount_tag=host0,security_model=mapped,id=host0 \
   -s
 ``` 
 
@@ -75,7 +75,7 @@ debug with `gdb ./linux/vmlinux -ex "target remote localhost:1234"`. Or with vsc
 Ssh into the VM with:
 
 ```
-ssh -p 10022 debian@localhost
+ssh -p 10022 ubuntu@localhost
 ```
 Though if you are testing networking, ssh-ing in might add noise.
 
@@ -88,6 +88,7 @@ Host debug-linux
     Port 10022
 ```
 
+To stop qemu, type Ctrl-A X
 
 # Sources
 
