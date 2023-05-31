@@ -100,6 +100,7 @@ build {
     inline = [
       "sudo DEBIAN_FRONTEND=noninteractive apt update",
       "sudo DEBIAN_FRONTEND=noninteractive apt install -y ipset iptables nftables git make net-tools tcpdump jq",
+      "sudo update-alternatives --set iptables /usr/sbin/iptables-legacy",
       "sudo DEBIAN_FRONTEND=noninteractive apt install -y ca-certificates curl gnupg lsb-release apt-transport-https software-properties-common",
       # install clang for ebpf
       "sudo DEBIAN_FRONTEND=noninteractive apt install -y clang libbpf-dev linux-tools-common linux-tools-generic",

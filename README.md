@@ -62,9 +62,10 @@ qemu-system-x86_64 \
   -serial mon:stdio \
   -drive file=img.qcow2,if=virtio,cache=writeback,discard=ignore,format=qcow2 \
   -net nic -net user,hostfwd=tcp::10022-:22 \
-  -m 8192 -nographic \
+  -m 16384 -nographic \
   -append "root=/dev/vda2 ro rdinit=/sbin/init net.ifnames=0 biosdevname=0 console=ttyS0 nokaslr" \
   -virtfs local,path=$HOME,mount_tag=host0,security_model=mapped,id=host0 \
+  -smp 32 \
   -s
 ``` 
 
